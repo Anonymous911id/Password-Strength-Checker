@@ -69,14 +69,6 @@ def evaluate_password(password: str) -> dict:
     return {"status": status, "score": score, "feedback": feedback}
 
 
-user_input = input("Enter the password: ")
-result = evaluate_password(user_input)
-
-print(f"Result: {result['status']} (Score: {result['score']}/6)")
-if result['feedback']:
-    print("Advices:" , ", ".join(result['feedback']))
-
-
 # --- Streamlit UI ---
 
 st.set_page_config(page_title="Password Strength Checker", page_icon="🔑")
