@@ -1,6 +1,8 @@
 import re
 import streamlit as st
 
+# --- Logic functions ---
+
 def check_length(password: str) -> bool:
     return len(password) >= 8
 
@@ -73,3 +75,34 @@ result = evaluate_password(user_input)
 print(f"Result: {result['status']} (Score: {result['score']}/6)")
 if result['feedback']:
     print("Advices:" , ", ".join(result['feedback']))
+
+
+# --- Streamlit UI ---
+
+st.set_page_config(page_title="Password Strength Checker", page_icon="🔑")
+
+st.title("Password Strength Checker")
+st.write("Enter a password to test its security strength")
+
+# Password
+user_password = st.text_input("Password", type='password')
+
+if user_password:
+    result = evaluate_password(user_password)
+    score = result["score"]
+    status = result['status']
+
+    progress_val = min(score / 6.0, 1.0)
+    st.progress(progress_val)
+
+    if status == "Weak":
+        st.error(f"Status: **{status}** (Score: {score}/6)")
+    elif status == "Medium":
+        st.error(f"Status: **{status}** (Score: {score}/6)")
+    else:
+        st.error(f"Status: **{status}** (Score: {score}/6)")
+
+    if result["feedback"]:
+        st.subheader("Suggestion to improve")
+        for tip in result['feedback']:
+            st.write(f"-{tip}")
